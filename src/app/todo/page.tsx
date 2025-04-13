@@ -24,7 +24,7 @@ export default function TodoList() {
   };
 
   const deleteTodo = async (id: number) => {
-    const res = await fetch('/api/todos', {
+    await fetch('/api/todos', {
       method: 'DELETE',
       body: JSON.stringify({ id }),
     });
