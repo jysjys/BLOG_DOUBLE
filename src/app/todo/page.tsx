@@ -28,8 +28,7 @@ export default function TodoList() {
       method: 'DELETE',
       body: JSON.stringify({ id }),
     });
-    const data = await res.json();
-    setTodos(todos.filter((todo) => todo.id !== id));
+    fetchTodoList();
   };
 
   const btn = () => {
