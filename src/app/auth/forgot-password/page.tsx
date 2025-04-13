@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 
 export default function ForgotPassword() {
@@ -17,10 +18,12 @@ export default function ForgotPassword() {
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="flex justify-center">
-          <img
+          <Image
             src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
             alt="Logo"
-            className="w-8 h-8"
+            width={32}
+            height={32}
+            priority
           />
         </div>
 
@@ -28,7 +31,7 @@ export default function ForgotPassword() {
         <div className="text-center">
           <h2 className="text-3xl font-bold">Forgot password?</h2>
           <p className="mt-2 text-sm text-gray-400">
-            No worries, we'll send you reset instructions.
+            No worries, we&apos;ll send you reset instructions.
           </p>
         </div>
 

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 
 export default function SignUp() {
@@ -19,10 +20,12 @@ export default function SignUp() {
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="flex justify-center">
-          <img
+          <Image
             src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
             alt="Logo"
-            className="w-8 h-8"
+            width={32}
+            height={32}
+            priority
           />
         </div>
 
