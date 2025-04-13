@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/react';
 
 
 interface Todo {
@@ -10,17 +9,6 @@ interface Todo {
   completed: boolean;
 }
 
-const MyDropdown = () => {
-  return (
-    <Menu>
-      <MenuButton className="btn btn-primary mr-20 mb-20">Options</MenuButton>
-      <MenuItems className="menu bg-base-200">
-        <MenuItem><a>Item 1</a></MenuItem>
-        <MenuItem><a>Item 2</a></MenuItem>
-      </MenuItems>
-    </Menu>
-  );
-}
 
 
 export default function TodoList() {
