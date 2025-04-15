@@ -17,8 +17,12 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.1",
+    "@prisma/client": "^6.6.0",
+    "cors": "^2.8.5",
     "daisyui": "^5.0.19",
+    "express": "^5.1.0",
     "next": "15.3.0",
+    "prisma": "^6.6.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
