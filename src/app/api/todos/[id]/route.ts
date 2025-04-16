@@ -1,20 +1,15 @@
-import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import type { NextRequest } from 'next/server'
-
-interface DynamicRouteParams {
-  params: { id: string }
-}
 
 // GET /api/todos/[id]
 export async function GET(
-  request: NextRequest,
-  { params }: DynamicRouteParams
-): Promise<NextResponse> {
+  request: Request,
+    context: { params: Promise<{ id: string }> }
+) {
   try {
-    const todoId = parseInt(params.id)
+    const { id } = await context.params
+    const todoId = parseInt(id)
     if (isNaN(todoId)) {
-      return NextResponse.json(
+      return Response.json(
         { error: 'Invalid ID format' }, 
         { status: 400 }
       )
@@ -25,14 +20,14 @@ export async function GET(
     })
 
     return todo 
-      ? NextResponse.json(todo)
-      : NextResponse.json(
+      ? Response.json(todo)
+      : Response.json(
           { error: 'Todo not found' }, 
           { status: 404 }
         )
   } catch (error) {
     console.error('[GET] Error:', error)
-    return NextResponse.json(
+    return Response.json(
       { error: 'Internal Server Error' }, 
       { status: 500 }
     )
@@ -41,13 +36,14 @@ export async function GET(
 
 // PUT /api/todos/[id]
 export async function PUT(
-  request: NextRequest,
-  { params }: DynamicRouteParams
-): Promise<NextResponse> {
+  request: Request,
+    context: { params: Promise<{ id: string }> }
+) {
   try {
-    const todoId = parseInt(params.id)
+    const { id } = await context.params
+    const todoId = parseInt(id)
     if (isNaN(todoId)) {
-      return NextResponse.json(
+      return Response.json(
         { error: 'Invalid ID format' }, 
         { status: 400 }
       )
@@ -59,10 +55,10 @@ export async function PUT(
       data: { text, completed },
     })
 
-    return NextResponse.json(updated)
+    return Response.json(updated)
   } catch (error) {
     console.error('[PUT] Error:', error)
-    return NextResponse.json(
+    return Response.json(
       { error: 'Internal Server Error' }, 
       { status: 500 }
     )
@@ -71,13 +67,14 @@ export async function PUT(
 
 // DELETE /api/todos/[id]
 export async function DELETE(
-  request: NextRequest,
-  { params }: DynamicRouteParams
-): Promise<NextResponse> {
+  request: Request,
+    context: { params: Promise<{ id: string }> }
+) {
   try {
-    const todoId = parseInt(params.id)
+    const { id } = await context.params
+    const todoId = parseInt(id)
     if (isNaN(todoId)) {
-      return NextResponse.json(
+      return Response.json(
         { error: 'Invalid ID format' }, 
         { status: 400 }
       )
@@ -87,13 +84,13 @@ export async function DELETE(
       where: { id: todoId },
     })
 
-    return NextResponse.json(
+    return Response.json(
       { success: true }, 
       { status: 200 }
     )
   } catch (error) {
     console.error('[DELETE] Error:', error)
-    return NextResponse.json(
+    return Response.json(
       { error: 'Internal Server Error' }, 
       { status: 500 }
     )
