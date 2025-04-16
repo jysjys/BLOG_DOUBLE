@@ -27,7 +27,7 @@ const cats = [
 
 export default function Example() {
   return (
-    <div className="bg-white py-20">
+    <div className="bg-white py-20 h-screen">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0">
           <h2 className="text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">Meet Our Cats</h2>
