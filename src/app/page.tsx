@@ -1,104 +1,71 @@
-import Image from "next/image";
+const cats = [
+  {
+    id: 1,
+    name: 'Black',
+    description: 'A sleek and mysterious black cat with piercing yellow eyes. Midnight loves to explore and is known for her graceful movements and independent nature.',
+    imageUrl: '/cat_black.jpg',
+    traits: ['Independent', 'Curious', 'Playful'],
+    age: '2 years old'
+  },
+  {
+    id: 2,
+    name: 'Huangmao',
+    description: 'A cheerful yellow tabby with a warm personality. Sunny enjoys basking in the sun and is always ready for a cuddle session.',
+    imageUrl: '/cat_yellow.jpg',
+    traits: ['Friendly', 'Affectionate', 'Laid-back'],
+    age: '3 years old'
+  },
+  {
+    id: 3,
+    name: 'Erya',
+    description: 'A beautiful white cat with a gentle demeanor. Snowball is known for her calm nature and loves to be pampered. she is beautifyful',
+    imageUrl: '/cat_white.jpg',
+    traits: ['Gentle', 'Elegant', 'Sociable'],
+    age: '1.5 years old'
+  }
+]
 
-export default function Home() {
+export default function Example() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        hello
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="bg-white py-20">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl lg:mx-0">
+          <h2 className="text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">Meet Our Cats</h2>
+          <p className="mt-2 text-lg/8 text-gray-600">Discover the unique personalities of our feline friends.</p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+          {cats.map((cat) => (
+            <article key={cat.id} className="flex max-w-xl flex-col items-start justify-between">
+              <div className="relative w-full">
+                <img
+                  src={cat.imageUrl}
+                  alt={cat.name}
+                  className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
+                />
+              </div>
+              <div className="group relative">
+                <h3 className="mt-3 text-lg/6 font-semibold text-gray-900">
+                  {cat.name}
+                </h3>
+                <p className="mt-2 text-sm/6 text-gray-600">{cat.description}</p>
+                <div className="mt-4">
+                  <p className="text-sm font-medium text-gray-900">{cat.age}</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {cat.traits.map((trait, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
+                      >
+                        {trait}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
     </div>
-  );
+  )
 }
