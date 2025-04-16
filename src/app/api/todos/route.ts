@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+// 只能用在 Node.js runtime
+export const runtime = 'nodejs'
+
 // GET /api/todos
 export async function GET() {
   try {

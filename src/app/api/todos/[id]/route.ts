@@ -1,5 +1,8 @@
 import { prisma } from '@/lib/prisma'
 
+// 只能用在 Node.js runtime
+export const runtime = 'nodejs'
+
 // GET /api/todos/[id]
 export async function GET(
   request: Request,
