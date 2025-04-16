@@ -132,6 +132,14 @@ const config = {
         "fromEnvVar": null,
         "value": "darwin-arm64",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-3.0.x"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -158,8 +166,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Todo {\n  id        Int      @id @default(autoincrement())\n  text      String\n  completed Boolean  @default(false)\n  createdAt DateTime @default(now()) @db.DateTime\n  updatedAt DateTime @updatedAt @db.Timestamp\n}\n",
-  "inlineSchemaHash": "59306e4f15f7b1bcdbd59ca8b5163f0ee22fa14aa05fbeb535353d174c9dce5a",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/generated/prisma\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Todo {\n  id        Int      @id @default(autoincrement())\n  text      String\n  completed Boolean  @default(false)\n  createdAt DateTime @default(now()) @db.DateTime\n  updatedAt DateTime @updatedAt @db.Timestamp\n}\n",
+  "inlineSchemaHash": "2d68e77d34e42e66273eceee6db3834de9b755dbc982fca8973d2d735c1487df",
   "copyEngine": true
 }
 config.dirname = '/'
