@@ -125,6 +125,18 @@ exports.Prisma.TodoScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PetScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  age: 'age',
+  color: 'color',
+  breed: 'breed',
+  description: 'description',
+  imageUrl: 'imageUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -134,9 +146,23 @@ exports.Prisma.TodoOrderByRelevanceFieldEnum = {
   text: 'text'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
+exports.Prisma.PetOrderByRelevanceFieldEnum = {
+  name: 'name',
+  color: 'color',
+  breed: 'breed',
+  description: 'description',
+  imageUrl: 'imageUrl'
+};
+
 
 exports.Prisma.ModelName = {
-  Todo: 'Todo'
+  Todo: 'Todo',
+  Pet: 'Pet'
 };
 
 /**

@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
   binaryTargets = ["native", "rhel-openssl-3.0.x", "debian-openssl-3.0.x"]
 }
 
@@ -21,4 +20,16 @@ model Todo {
   completed Boolean  @default(false)
   createdAt DateTime @default(now()) @db.DateTime
   updatedAt DateTime @updatedAt @db.Timestamp
+}
+
+model Pet {
+  id          Int      @id @default(autoincrement())
+  name        String
+  age         Float
+  color       String
+  breed       String
+  description String
+  imageUrl    String?
+  createdAt   DateTime @default(now()) @db.DateTime
+  updatedAt   DateTime @updatedAt @db.Timestamp
 }
