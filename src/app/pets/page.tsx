@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { supabase } from '@/lib/supabase'
 
 interface Pet {
   id: number
@@ -25,6 +26,8 @@ export default function PetsPage() {
     description: '',
     imageUrl: ''
   })
+  const [uploading, setUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
 
   useEffect(() => {
     fetchPets()
@@ -84,12 +87,12 @@ export default function PetsPage() {
   }
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-white min-h-screen py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8 h-full">
-        <div className="mx-auto max-w-2xl text-center pt-8">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Pet Management</h2>
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">宠物管理</h2>
           <p className="mt-2 text-lg leading-8 text-gray-600">
-            Manage your pets with our easy-to-use interface
+            轻松管理您的宠物信息
           </p>
         </div>
 
@@ -107,44 +110,44 @@ export default function PetsPage() {
               })
               setIsModalOpen(true)
             }}
-            className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="rounded-md bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors duration-200"
           >
-            Add New Pet
+            添加新宠物
           </button>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 pb-8">
+        <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 pb-8">
           {pets.map((pet) => (
-            <div key={pet.id} className="rounded-2xl bg-gray-50 p-8 ring-1 ring-gray-200">
+            <div key={pet.id} className="relative group rounded-2xl bg-white p-8 shadow-lg ring-1 ring-gray-200 hover:shadow-xl transition-all duration-200 ease-in-out transform hover:-translate-y-1">
               {pet.imageUrl && (
-                <div className="relative h-48 w-full overflow-hidden rounded-lg">
+                <div className="relative h-48 w-full overflow-hidden rounded-lg mb-6">
                   <Image
                     src={pet.imageUrl}
                     alt={pet.name}
                     fill
-                    className="object-cover"
+                    className="object-cover transition-transform duration-200 group-hover:scale-105"
                   />
                 </div>
               )}
-              <h3 className="mt-6 text-lg font-semibold leading-8 text-gray-900">{pet.name}</h3>
-              <div className="mt-4 space-y-2">
-                <p className="text-sm leading-6 text-gray-600">Age: {pet.age} years</p>
-                <p className="text-sm leading-6 text-gray-600">Color: {pet.color}</p>
-                <p className="text-sm leading-6 text-gray-600">Breed: {pet.breed}</p>
-                <p className="text-sm leading-6 text-gray-600">{pet.description}</p>
+              <h3 className="text-xl font-semibold leading-8 text-gray-900">{pet.name}</h3>
+              <div className="mt-4 space-y-2 text-base">
+                <p className="leading-6 text-gray-600">年龄: {pet.age} 岁</p>
+                <p className="leading-6 text-gray-600">毛色: {pet.color}</p>
+                <p className="leading-6 text-gray-600">品种: {pet.breed}</p>
+                <p className="leading-6 text-gray-600">{pet.description}</p>
               </div>
               <div className="mt-6 flex gap-4">
                 <button
                   onClick={() => handleEdit(pet)}
-                  className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                  className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500 transition-colors duration-200"
                 >
-                  Edit
+                  编辑
                 </button>
                 <button
                   onClick={() => handleDelete(pet.id)}
-                  className="text-sm font-semibold leading-6 text-red-600 hover:text-red-500"
+                  className="text-sm font-semibold leading-6 text-red-600 hover:text-red-500 transition-colors duration-200"
                 >
-                  Delete
+                  删除
                 </button>
               </div>
             </div>
@@ -154,9 +157,9 @@ export default function PetsPage() {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-10 overflow-y-auto bg-gray-500 bg-opacity-75">
+        <div className="fixed inset-0 z-10 overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm">
           <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <div className="relative transform overflow-hidden rounded-2xl bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+            <div className="relative transform overflow-hidden rounded-2xl bg-white px-6 pb-6 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
               <div className="mb-6">
                 <h3 className="text-2xl font-semibold leading-6 text-gray-900">
                   {currentPet ? '编辑宠物信息' : '添加新宠物'}
@@ -174,7 +177,7 @@ export default function PetsPage() {
                         id="name"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="block w-full rounded-lg border border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-lg border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-colors duration-200"
                         placeholder="请输入宠物名字"
                         required
                       />
@@ -191,7 +194,7 @@ export default function PetsPage() {
                         id="age"
                         value={formData.age}
                         onChange={(e) => setFormData({ ...formData, age: parseFloat(e.target.value) })}
-                        className="block w-full rounded-lg border border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-lg border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-colors duration-200"
                         placeholder="请输入宠物年龄"
                         required
                       />
@@ -208,7 +211,7 @@ export default function PetsPage() {
                         id="color"
                         value={formData.color}
                         onChange={(e) => setFormData({ ...formData, color: e.target.value })}
-                        className="block w-full rounded-lg border border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-lg border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-colors duration-200"
                         placeholder="请输入宠物毛色"
                         required
                       />
@@ -225,7 +228,7 @@ export default function PetsPage() {
                         id="breed"
                         value={formData.breed}
                         onChange={(e) => setFormData({ ...formData, breed: e.target.value })}
-                        className="block w-full rounded-lg border border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-lg border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-colors duration-200"
                         placeholder="请输入宠物品种"
                         required
                       />
@@ -242,7 +245,7 @@ export default function PetsPage() {
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         rows={4}
-                        className="block w-full rounded-lg border border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-lg border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-colors duration-200"
                         placeholder="请输入宠物简介"
                         required
                       />
@@ -250,18 +253,63 @@ export default function PetsPage() {
                   </div>
 
                   <div>
-                    <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">
-                      图片URL（可选）
+                    <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+                      宠物头像
                     </label>
                     <div className="mt-1">
                       <input
-                        type="text"
-                        id="imageUrl"
-                        value={formData.imageUrl}
-                        onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                        className="block w-full rounded-lg border border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        placeholder="请输入图片URL"
+                        type="file"
+                        id="image"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0]
+                          if (!file) return
+                          
+                          setUploading(true)
+                          setUploadProgress(0)
+                          
+                          const fileExt = file.name.split('.').pop()
+                          const fileName = `${Math.random()}.${fileExt}`
+                          const filePath = `${fileName}`
+                          
+                          const { data, error } = await supabase.storage
+                            .from('uploads')
+                            .upload(filePath, file, {
+                              cacheControl: '3600',
+                              upsert: false,
+                              contentType: file.type,
+                              onProgress: (progress) => {
+                                setUploadProgress((progress.loadedBytes / file.size) * 100)
+                              }
+                            })
+                          
+                          if (error) {
+                            alert('上传失败: ' + error.message)
+                          } else {
+                            const { data: { publicUrl } } = supabase.storage
+                              .from('uploads')
+                              .getPublicUrl(filePath)
+                            setFormData({ ...formData, imageUrl: publicUrl })
+                          }
+                          
+                          setUploading(false)
+                        }}
+                        className="block w-full rounded-lg border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-colors duration-200"
+                        disabled={uploading}
                       />
+                      {uploading && (
+                        <div className="mt-2 w-full bg-gray-200 rounded-full h-2.5">
+                          <div 
+                            className="bg-indigo-600 h-2.5 rounded-full" 
+                            style={{ width: `${uploadProgress}%` }}
+                          ></div>
+                        </div>
+                      )}
+                      {formData.imageUrl && !uploading && (
+                        <div className="mt-2 text-sm text-gray-500">
+                          已上传: {formData.imageUrl}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -270,13 +318,13 @@ export default function PetsPage() {
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors duration-200"
                   >
                     取消
                   </button>
                   <button
                     type="submit"
-                    className="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors duration-200"
                   >
                     {currentPet ? '更新' : '添加'}
                   </button>
@@ -288,4 +336,4 @@ export default function PetsPage() {
       )}
     </div>
   )
-} 
+}
