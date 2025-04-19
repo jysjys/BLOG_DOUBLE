@@ -159,7 +159,7 @@ export default function PetsPage() {
       {isModalOpen && (
         <div className="fixed inset-0 z-10 overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm">
           <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <div className="relative transform overflow-hidden rounded-2xl bg-white px-6 pb-6 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <div className="relative transform overflow-hidden rounded-xl bg-white px-6 pb-6 pt-5 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
               <div className="mb-6">
                 <h3 className="text-2xl font-semibold leading-6 text-gray-900">
                   {currentPet ? '编辑宠物信息' : '添加新宠物'}
@@ -177,7 +177,7 @@ export default function PetsPage() {
                         id="name"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="block w-full rounded-lg border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-colors duration-200"
+                        className="block w-full rounded-md border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 sm:text-sm transition-all duration-200"
                         placeholder="请输入宠物名字"
                         required
                       />
@@ -194,7 +194,7 @@ export default function PetsPage() {
                         id="age"
                         value={formData.age}
                         onChange={(e) => setFormData({ ...formData, age: parseFloat(e.target.value) })}
-                        className="block w-full rounded-lg border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-colors duration-200"
+                        className="block w-full rounded-md border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 sm:text-sm transition-all duration-200"
                         placeholder="请输入宠物年龄"
                         required
                       />
@@ -211,7 +211,7 @@ export default function PetsPage() {
                         id="color"
                         value={formData.color}
                         onChange={(e) => setFormData({ ...formData, color: e.target.value })}
-                        className="block w-full rounded-lg border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-colors duration-200"
+                        className="block w-full rounded-md border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 sm:text-sm transition-all duration-200"
                         placeholder="请输入宠物毛色"
                         required
                       />
@@ -228,7 +228,7 @@ export default function PetsPage() {
                         id="breed"
                         value={formData.breed}
                         onChange={(e) => setFormData({ ...formData, breed: e.target.value })}
-                        className="block w-full rounded-lg border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-colors duration-200"
+                        className="block w-full rounded-md border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 sm:text-sm transition-all duration-200"
                         placeholder="请输入宠物品种"
                         required
                       />
@@ -245,69 +245,91 @@ export default function PetsPage() {
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         rows={4}
-                        className="block w-full rounded-lg border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-colors duration-200"
+                        className="block w-full rounded-md border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 sm:text-sm transition-all duration-200"
                         placeholder="请输入宠物简介"
                         required
                       />
                     </div>
                   </div>
 
-                  <div>
-                    <label htmlFor="image" className="block text-sm font-medium text-gray-700">
-                      宠物头像
+                  <div className="form-control w-full">
+                    <label className="label">
+                      <span className="label-text">宠物头像</span>
                     </label>
-                    <div className="mt-1">
-                      <input
-                        type="file"
-                        id="image"
-                        accept="image/*"
-                        onChange={async (e) => {
-                          const file = e.target.files?.[0]
-                          if (!file) return
-                          
-                          setUploading(true)
-                          setUploadProgress(0)
-                          
-                          const fileExt = file.name.split('.').pop()
-                          const fileName = `${Math.random()}.${fileExt}`
-                          const filePath = `${fileName}`
-                          
-                          const { data, error } = await supabase.storage
-                            .from('uploads')
-                            .upload(filePath, file, {
-                              cacheControl: '3600',
-                              upsert: false,
-                              contentType: file.type,
-                              onProgress: (progress) => {
-                                setUploadProgress((progress.loadedBytes / file.size) * 100)
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center justify-center w-full">
+                        <label 
+                          htmlFor="image" 
+                          className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-base-200 hover:bg-base-300 transition-colors duration-200"
+                        >
+                          <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg className="w-8 h-8 mb-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                            <p className="mb-2 text-sm text-gray-500">
+                              <span className="font-semibold">点击上传</span> 或拖拽图片到此处
+                            </p>
+                            <p className="text-xs text-gray-500">PNG, JPG, GIF (最大 2MB)</p>
+                          </div>
+                          <input 
+                            id="image" 
+                            type="file" 
+                            accept="image/*" 
+                            className="hidden" 
+                            onChange={async (e) => {
+                              const file = e.target.files?.[0]
+                              if (!file) return
+                              
+                              setUploading(true)
+                              setUploadProgress(0)
+                              
+                              const fileExt = file.name.split('.').pop()
+                              const fileName = `${Math.random()}.${fileExt}`
+                              const filePath = `${fileName}`
+                              
+                              const { data, error } = await supabase.storage
+                                .from('uploads')
+                                .upload(filePath, file, {
+                                  cacheControl: '3600',
+                                  upsert: false,
+                                  contentType: file.type
+                                })
+                              
+                              if (error) {
+                                alert('上传失败: ' + error.message)
+                              } else {
+                                const { data: { publicUrl } } = await supabase.storage
+                                  .from('uploads')
+                                  .getPublicUrl(filePath)
+                                setFormData({ ...formData, imageUrl: publicUrl })
                               }
-                            })
-                          
-                          if (error) {
-                            alert('上传失败: ' + error.message)
-                          } else {
-                            const { data: { publicUrl } } = supabase.storage
-                              .from('uploads')
-                              .getPublicUrl(filePath)
-                            setFormData({ ...formData, imageUrl: publicUrl })
-                          }
-                          
-                          setUploading(false)
-                        }}
-                        className="block w-full rounded-lg border-gray-300 bg-white py-2.5 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-colors duration-200"
-                        disabled={uploading}
-                      />
+                              
+                              setUploading(false)
+                            }}
+                            disabled={uploading}
+                          />
+                        </label>
+                      </div>
+                      
                       {uploading && (
-                        <div className="mt-2 w-full bg-gray-200 rounded-full h-2.5">
-                          <div 
-                            className="bg-indigo-600 h-2.5 rounded-full" 
-                            style={{ width: `${uploadProgress}%` }}
-                          ></div>
+                        <div className="w-full">
+                          <div className="text-sm mb-1 text-center">上传中...</div>
+                          <progress 
+                            className="progress progress-primary w-full" 
+                            value={uploadProgress} 
+                            max="100"
+                          ></progress>
                         </div>
                       )}
+                      
                       {formData.imageUrl && !uploading && (
-                        <div className="mt-2 text-sm text-gray-500">
-                          已上传: {formData.imageUrl}
+                        <div className="alert alert-success shadow-lg mt-2">
+                          <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>已上传: {formData.imageUrl}</span>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -318,13 +340,13 @@ export default function PetsPage() {
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors duration-200"
+                    className="rounded-md bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 hover:ring-gray-400 transition-all duration-200"
                   >
                     取消
                   </button>
                   <button
                     type="submit"
-                    className="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors duration-200"
+                    className="rounded-md bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200"
                   >
                     {currentPet ? '更新' : '添加'}
                   </button>

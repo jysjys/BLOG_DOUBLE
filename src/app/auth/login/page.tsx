@@ -22,7 +22,9 @@ export default function Login() {
           throw sessionError
         }
         if (session) {
-          router.push('/')
+          const searchParams = new URLSearchParams(window.location.search)
+          const redirectTo = searchParams.get('redirectTo') || '/'
+          router.push(redirectTo)
         }
       } catch (err) {
         console.error('Session check error:', err)
@@ -32,15 +34,24 @@ export default function Login() {
       }
     }
     checkSession()
+
+    // 监听认证状态变化
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        const searchParams = new URLSearchParams(window.location.search)
+        const redirectTo = searchParams.get('redirectTo') || '/'
+        router.push(redirectTo)
+      }
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
   }, [router, supabase])
 
   useEffect(() => {
     setOrigin(window.location.origin)
   }, [])
-
-  // 获取重定向URL
-  const searchParams = new URLSearchParams(window.location.search)
-  const redirectTo = searchParams.get('redirectTo') || '/'
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-b from-gray-50 to-white">
