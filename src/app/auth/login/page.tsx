@@ -100,7 +100,7 @@ export default function Login() {
                 input: 'rounded-lg border-gray-200 focus:ring-2 focus:ring-gray-200'
               }
             }}
-            providers={['github', 'google']}
+            providers={[]}
             redirectTo={`${origin}/auth/callback`}
           />
         )}
