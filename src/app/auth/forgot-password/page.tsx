@@ -3,14 +3,30 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
+  const [, setError] = useState<string | null>(null);
+  const supabase = createClientComponentClient();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: 实现忘记密码逻辑
-    console.log('Password reset attempt for:', email);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/reset-password`,
+      });
+      
+      if (error) {
+        console.error('Password reset error:', error.message);
+        setError(error.message);
+      } else {
+        setError(null);
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      setError('An unexpected error occurred');
+    }
   };
 
   return (

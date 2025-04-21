@@ -1,7 +1,7 @@
 import './globals.css'
-import { Inter } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+// 使用系统默认字体代替Google Fonts，避免网络连接问题
+const inter = { className: 'font-sans' }
 
 export const metadata = {
   title: '宠物管理系统',

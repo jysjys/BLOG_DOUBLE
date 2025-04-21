@@ -3,37 +3,6 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-// In-memory storage for pets (replace with database in production)
-let pets = [
-  {
-    id: 1,
-    name: 'Black',
-    age: 2,
-    color: 'Black',
-    breed: 'Domestic Shorthair',
-    description: 'A sleek and mysterious black cat with piercing yellow eyes.',
-    imageUrl: '/cat_black.jpg',
-  },
-  {
-    id: 2,
-    name: 'Huangmao',
-    age: 3,
-    color: 'Yellow',
-    breed: 'Tabby',
-    description: 'A cheerful yellow tabby with a warm personality.',
-    imageUrl: '/cat_yellow.jpg',
-  },
-  {
-    id: 3,
-    name: 'Erya',
-    age: 1.5,
-    color: 'White',
-    breed: 'Persian',
-    description: 'A beautiful white cat with a gentle demeanor.',
-    imageUrl: '/cat_white.jpg',
-  }
-]
-
 export async function GET() {
   try {
     const pets = await prisma.pet.findMany({

@@ -1,3 +1,7 @@
+'use client'
+
+import Image from 'next/image'
+
 const cats = [
   {
     id: 1,
@@ -37,9 +41,11 @@ export default function Example() {
           {cats.map((cat) => (
             <article key={cat.id} className="flex max-w-xl flex-col items-start justify-between">
               <div className="relative w-full">
-                <img
+                <Image
                   src={cat.imageUrl}
                   alt={cat.name}
+                  width={800}
+                  height={600}
                   className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
                 />
               </div>

@@ -28,6 +28,7 @@ export default function PetsPage() {
   })
   const [uploading, setUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
+  const [imageUrl, setImageUrl] = useState<string | null>(null)
 
   useEffect(() => {
     fetchPets()
@@ -287,7 +288,7 @@ export default function PetsPage() {
                               const fileName = `${Math.random()}.${fileExt}`
                               const filePath = `${fileName}`
                               
-                              const { data, error } = await supabase.storage
+                              const { error } = await supabase.storage
                                 .from('uploads')
                                 .upload(filePath, file, {
                                   cacheControl: '3600',
@@ -298,10 +299,10 @@ export default function PetsPage() {
                               if (error) {
                                 alert('上传失败: ' + error.message)
                               } else {
-                                const { data: { publicUrl } } = await supabase.storage
+                                const { data: { publicUrl } } = supabase.storage
                                   .from('uploads')
                                   .getPublicUrl(filePath)
-                                setFormData({ ...formData, imageUrl: publicUrl })
+                                setImageUrl(publicUrl)
                               }
                               
                               setUploading(false)
@@ -322,13 +323,13 @@ export default function PetsPage() {
                         </div>
                       )}
                       
-                      {formData.imageUrl && !uploading && (
+                      {imageUrl && !uploading && (
                         <div className="alert alert-success shadow-lg mt-2">
                           <div>
                             <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <span>已上传: {formData.imageUrl}</span>
+                            <span>已上传: {imageUrl}</span>
                           </div>
                         </div>
                       )}
